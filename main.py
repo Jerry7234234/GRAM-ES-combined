@@ -9,7 +9,7 @@ from enum import Enum
 bus = smbus2.SMBus(1)
 right_servo = Servo(17)
 user_detector = Range(22, 23)
-# hotwet_detector = TempHum(bus)
+# hotwet_detector = TempHum(bus) # The temperature and humidity sensor is not used here
 mag_detector = MagField(bus)
 smoke_detector = AirQua(bus)
 fill_checkor = Fill()
@@ -77,6 +77,7 @@ def testloop(ub, lb):
 
 def dataloop():
     while True:
+	# Only send data after the magnetic sensor calibration is complete
         if globals()['calib_complete']:
             write_to_db(battery_detected = globals()['battery_violation'], fire_detected = globals()['fire&smoke'], ToF_reading = globals()['fill_level'], magnetic_reading = globals()['mag_field'],  air_quality_reading = globals()['co2_level'],  bin_id = 1)
 
